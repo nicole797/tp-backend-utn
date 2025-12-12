@@ -1,15 +1,17 @@
 import ProductModel from "../model/ProductModel";
 import IProduct from "../interfaces/IProduct";
 
-export const getAllProducts = async (filters: any) => {
+export const getAllProducts = async (
+  filters: Record<string, any>
+): Promise<IProduct[]> => {
   return await ProductModel.find(filters);
 };
 
-export const getProductById = async (id: string) => {
+export const getProductById = async (id: string): Promise<IProduct | null> => {
   return await ProductModel.findById(id);
 };
 
-export const createProduct = async (data: IProduct) => {
+export const createProduct = async (data: IProduct): Promise<IProduct> => {
   return await ProductModel.create(data);
 };
 
