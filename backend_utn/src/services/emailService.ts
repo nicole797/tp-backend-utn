@@ -23,7 +23,7 @@ const emailService = async (req: Request, res: Response) => {
       html: createTemplate(emailUser, message)
     })
 
-    res.json({ succes: true, message: "Correo fue enviado exitosamente", info })
+    res.json({ success: true, message: "Correo fue enviado exitosamente", info })
 
   } catch (e) {
     const error = e as Error
