@@ -1,27 +1,25 @@
 import { Request, Response, NextFunction } from "express"
-import { verify } from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 import IUserTokenPayload from "../interfaces/IUserTokenPayload"
 
-const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+const authMiddleware = (req: Request, res: Response, next: NextFunction) : void => {
   const SECRET_KEY = process.env.JWT_SECRET!
   const header = req.headers.authorization
 
   if (!header) {
-    return res.status(401).json({ succes: false, error: "El token es requerido" })
+    res.status(401).json({ success: false, error: "El token es requerido" });
+    return;
   }
 
   const token = header.split(" ")[1]
 
   try {
-    const payload = verify(token, SECRET_KEY);
-
-    req.user = payload as IUserTokenPayload
-
-    next()
+    const payload = jwt.verify(token, SECRET_KEY) as IUserTokenPayload;
+    req.user = payload;
+    next();
   } catch (e) {
-    const error = e as Error
-    res.status(401).json({ succes: false, error: error.message })
+    res.status(401).json({ success: false, error: "Token inválido" });
   }
-}
+};
 
-export default authMiddleware 
+export default authMiddleware;
