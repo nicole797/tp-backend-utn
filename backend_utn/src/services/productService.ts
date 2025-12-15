@@ -15,10 +15,13 @@ export const createProduct = async (data: IProduct): Promise<IProduct> => {
   return await ProductModel.create(data);
 };
 
-export const updateProduct = async (id: string, data: Partial<IProduct>) => {
+export const updateProduct = async (
+  id: string,
+  data: Partial<IProduct>
+): Promise<IProduct | null> => {
   return await ProductModel.findByIdAndUpdate(id, data, { new: true });
 };
 
-export const deleteProduct = async (id: string) => {
+export const deleteProduct = async (id: string): Promise<IProduct | null> => {
   return await ProductModel.findByIdAndDelete(id);
 };
