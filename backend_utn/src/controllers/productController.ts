@@ -5,13 +5,23 @@ import { Request, Response } from "express"
 import { Types } from "mongoose"
 import * as productService from "../services/productService";
 import { createProductSchema, updatedProductSchema } from "../validators/productValidator"
+import { productQuerySchema } from "../validators/productQueryValidator";
+
 
 
 class ProductController {
-  static getAllProducts = async (req: Request, res: Response): Promise<void | Response> => {
+  static getAllProducts = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { name, stock, category, minPrice, maxPrice } = req.query
-      console.log(req.query)
+      const validator = productQuerySchema.safeParse(req.query);
+
+    if (!validator.success) {
+      res.status(400).json({
+        success: false,
+        error: validator.error.flatten().fieldErrors
+      });
+      return;
+    }
+      const { name, stock, category, minPrice, maxPrice } = validator.data;
 
       const filter:Record<string, any> = {}
 
