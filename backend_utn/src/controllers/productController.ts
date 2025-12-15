@@ -2,7 +2,6 @@
 // LA REQUEST Y EL RESPONSE SIEMPRE ESTARÁN SOLO EN LOS CONTROLLERS
 
 import { Request, Response } from "express"
-import Product from "../model/ProductModel"
 import { Types } from "mongoose"
 import * as productService from "../services/productService";
 import { createProductSchema, updatedProductSchema } from "../validators/productValidator"
@@ -77,7 +76,7 @@ class ProductController {
         return;
       }
 
-       const newProduct = await productService.createProduct(validator.data);
+      const newProduct = await productService.createProduct(validator.data);
       res.status(201).json({ success: true, data: newProduct });
     } catch (e) {
       res.status(500).json({ success: false, error: (e as Error).message });
