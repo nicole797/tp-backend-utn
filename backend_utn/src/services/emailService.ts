@@ -9,6 +9,12 @@ const emailService = async (req: Request, res: Response) => {
     return res.status(400).json({ success: false, message: "Data invalida" })
   }
 
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    return res.status(500).json({
+      success: false,
+      message: "Servicio de email no configurado"
+    });
+  }
   try {
     const info = await transporter.sendMail({
       from: `Mensaje de la tienda: ${emailUser}`,
