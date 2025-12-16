@@ -12,11 +12,13 @@ const storage = multer.diskStorage({
 })
 
 const fileFilter = (req: Express.Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
-  if (file.mimetype.startsWith("image/")) {
-    cb(null, true)
+  const allowedMimetypes = ['image/jpeg', 'image/jpg', 'image/png'];
+
+  if (allowedMimetypes.includes(file.mimetype.toLowerCase())) {
+    cb(null, true);  // acepta el archivo
   } else {
-    console.log(file.mimetype)
-    cb(new Error("Solo se permiten imagenes"))
+    console.log('Tipo de archivo rechazado:', file.mimetype);
+    cb(new Error("Solo se permiten imagenes"));
   }
 }
 
