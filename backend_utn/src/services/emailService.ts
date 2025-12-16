@@ -30,5 +30,18 @@ const emailService = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, error: error.message })
   }
 }
+export const sendWelcomeEmail = async (email: string) => {
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) return
+
+  await transporter.sendMail({
+    from: `"Backend UTN" <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: "Bienvenido/a",
+    html: createTemplate(
+      email,
+      "Gracias por registrarte en nuestra plataforma"
+    )
+  })
+}
 
 export default emailService

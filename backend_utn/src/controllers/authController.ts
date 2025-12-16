@@ -4,6 +4,8 @@ import User from "../model/UserModel"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 dotenv.config()
+import { sendWelcomeEmail } from "../services/emailService"
+
 
 const SECRET_KEY = process.env.JWT_SECRET!
 
@@ -30,7 +32,11 @@ class AuthController {
       const newUser = new User({ email, password: hash })
 
       await newUser.save()
+
+      sendWelcomeEmail(email).catch(console.error)
+
       res.status(201).json({ success: true, data: newUser })
+
     } catch (e) {
       const error = e as Error
       switch (error.name) {
